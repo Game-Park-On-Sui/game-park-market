@@ -4,6 +4,7 @@ import {ReactNode} from "react";
 import "./globals.css";
 import {Navigation} from "@/components";
 import {SuiProvider} from "@/providers";
+import CustomProvider from "@/contexts";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -26,8 +27,10 @@ export default function RootLayout({children}: Readonly<{ children: ReactNode }>
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <SuiProvider>
-                    <Navigation />
-                    {children}
+                    <CustomProvider>
+                        <Navigation />
+                        {children}
+                    </CustomProvider>
                 </SuiProvider>
             </body>
         </html>
