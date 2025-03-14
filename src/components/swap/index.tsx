@@ -1,14 +1,16 @@
 'use client'
 
-import {ChangeEvent, useCallback, useEffect, useState} from "react";
+import {ChangeEvent, useCallback, useContext, useEffect, useState} from "react";
 import Image from "next/image";
 import {ArrowDown, ArrowDownUp, Wallet} from "lucide-react";
+import {SwapTokenInfoContext} from "@/contexts";
 
 export default function Swap() {
     const [inAmount, setInAmount] = useState<string>("");
     const [outAmount, setOutAmount] = useState<string>("0");
     const [state, setState] = useState<number>(0);
     const [swapType, setSwapType] = useState<number>(0);
+    const [swapTokenInfo] = useContext(SwapTokenInfoContext);
 
     const swapUpToDown = useCallback((amount: string) => {
         if (swapType === 0) {
@@ -52,13 +54,13 @@ export default function Swap() {
                     <div className="flex flex-col items-end gap-2">
                         <div className="opacity-0">100000000000</div>
                         <div className="flex gap-1 items-center">
-                            <Image src="https://archive.cetus.zone/assets/image/sui/sui.png" alt="Sui" width={28}
+                            <Image src={swapTokenInfo.length > 0 ? swapTokenInfo[swapType].image : "https://archive.cetus.zone/assets/image/sui/sui.png"} alt="Swap Token 1" width={28}
                                    height={28}/>
-                            <div>Sui</div>
+                            <div>{swapTokenInfo.length > 0 ? swapTokenInfo[swapType].name : "Sui"}</div>
                         </div>
                         <div className="flex gap-1 items-center text-[#567] text-sm">
                             <Wallet size={15}/>
-                            <span>1000000000</span>
+                            <span>{swapTokenInfo.length > 0 ? swapTokenInfo[swapType].balance : "1024"}</span>
                         </div>
                     </div>
                 </div>
@@ -73,7 +75,7 @@ export default function Swap() {
             </div>
             <div className="flex gap-1 items-center min-w-[384px] w-96 min-h-[128px] h-32 rounded-full border-2 border-[#0a0e0f] bg-[#afb3b5] px-10">
                 <div className="flex flex-col items-start gap-2">
-                    <span className="text-[#567] text-sm">You Pay</span>
+                    <span className="text-[#567] text-sm">You Receive</span>
                     <input className="w-full text-2xl font-bold focus:outline-none"
                            placeholder={outAmount}/>
                     <div className="opacity-0">Balance</div>
@@ -81,12 +83,12 @@ export default function Swap() {
                 <div className="flex flex-col items-end gap-2">
                     <div className="opacity-0">100000000000</div>
                     <div className="flex gap-1 items-center">
-                        <Image src="/GP-remove.png" alt="GP Remove" width={28} height={28}/>
-                        <div>GP</div>
+                        <Image src={swapTokenInfo.length > 0 ? swapTokenInfo[(swapType + 1) % 2].image : "/GP-remove.png"} alt="Swap Token 2" width={28} height={28}/>
+                        <div>{swapTokenInfo.length > 0 ? swapTokenInfo[(swapType + 1) % 2].name : "GP"}</div>
                     </div>
                     <div className="flex gap-1 items-center text-[#567] text-sm">
                         <Wallet size={15}/>
-                        <span>1000000000</span>
+                        <span>{swapTokenInfo.length > 0 ? swapTokenInfo[(swapType + 1) % 2].balance : 666}</span>
                     </div>
                 </div>
             </div>
