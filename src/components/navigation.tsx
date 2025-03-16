@@ -1,12 +1,14 @@
 'use client'
 
 import Image from "next/image";
-import {useContext} from "react";
 import {ConnectButton} from "@mysten/dapp-kit";
-import {NavTabContext} from "@/contexts";
+import {useAppSelector, AppDispatch} from "@/store";
+import {useDispatch} from "react-redux";
+import {setTab} from "@/store/modules/pageInfo";
 
 export default function Navigation() {
-    const [tab, setTab] = useContext(NavTabContext);
+    const tab = useAppSelector(state => state.pageInfo.tab);
+    const dispatch = useDispatch<AppDispatch>();
 
     return (
         <>
@@ -17,12 +19,12 @@ export default function Navigation() {
                         <Image src="/Game_Park_On_Sui-remove.png" alt="Game Park On Sui" width={80} height={60} priority={true} />
                         <div
                             className={"cursor-pointer hover:text-white h-16 leading-[4rem] transition-all " + (tab !== 0 ? "" : "px-4 text-white bg-[#080808]")}
-                            onClick={() => setTab(0)}>
+                            onClick={() => dispatch(setTab(0))}>
                             Swap
                         </div>
                         <div
                             className={"cursor-pointer hover:text-white h-16 leading-[4rem] transition-all " + (tab !== 1 ? "" : "px-4 text-white bg-[#080808]")}
-                            onClick={() => setTab(1)}>
+                            onClick={() => dispatch(setTab(1))}>
                             Trade
                         </div>
                     </div>

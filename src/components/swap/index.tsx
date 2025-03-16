@@ -1,16 +1,16 @@
 'use client'
 
-import {ChangeEvent, useCallback, useContext, useEffect, useState} from "react";
+import {ChangeEvent, useCallback, useEffect, useState} from "react";
 import Image from "next/image";
 import {ArrowDown, ArrowDownUp, Wallet} from "lucide-react";
-import {SwapTokenInfoContext} from "@/contexts";
+import {useAppSelector} from "@/store";
 
 export default function Swap() {
     const [inAmount, setInAmount] = useState<string>("");
     const [outAmount, setOutAmount] = useState<string>("0");
     const [state, setState] = useState<number>(0);
     const [swapType, setSwapType] = useState<number>(0);
-    const [swapTokenInfo] = useContext(SwapTokenInfoContext);
+    const swapTokenInfo = useAppSelector(state => state.pageInfo.swapTokenInfo);
 
     const swapUpToDown = useCallback((amount: string) => {
         if (swapType === 0) {

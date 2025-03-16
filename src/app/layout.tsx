@@ -3,8 +3,7 @@ import {Geist, Geist_Mono} from "next/font/google";
 import {ReactNode} from "react";
 import "./globals.css";
 import {Navigation} from "@/components";
-import {SuiProvider} from "@/providers";
-import CustomProvider from "@/contexts";
+import CustomProvider from "@/providers";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -26,12 +25,10 @@ export default function RootLayout({children}: Readonly<{ children: ReactNode }>
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <SuiProvider>
-                    <CustomProvider>
-                        <Navigation />
-                        {children}
-                    </CustomProvider>
-                </SuiProvider>
+                <CustomProvider>
+                    <Navigation />
+                    {children}
+                </CustomProvider>
             </body>
         </html>
     );
