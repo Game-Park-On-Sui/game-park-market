@@ -4,6 +4,7 @@ use sui::balance::{Self, Supply, Balance};
 use sui::coin::{Self, Coin};
 use sui::package::Publisher;
 use sui::sui::SUI;
+use sui::url;
 
 // constant
 const Exchange_Ratio_In: u64 = 100;
@@ -34,7 +35,7 @@ fun init(otw: GP, ctx: &mut TxContext) {
         b"GP",
         b"Game Park Coin",
         b"The universal currency used in the Game Park.",
-        option::none(),
+        option::some(url::new_unsafe_from_bytes(b"https://github.com/zcy1024/game-park-market/blob/main/public/GP.png?raw=true")),
         ctx
     );
 
