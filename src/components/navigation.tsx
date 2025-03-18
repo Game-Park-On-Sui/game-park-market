@@ -5,13 +5,18 @@ import {ConnectButton} from "@mysten/dapp-kit";
 import {useAppSelector, AppDispatch} from "@/store";
 import {useDispatch} from "react-redux";
 import {setTab} from "@/store/modules/pageInfo";
+import {UserRoundCog} from "lucide-react";
+import Bind from "@/components/bind";
+import {useState} from "react";
 
 export default function Navigation() {
     const tab = useAppSelector(state => state.pageInfo.tab);
     const dispatch = useDispatch<AppDispatch>();
 
+    const [isBinding, setIsBinding] = useState<boolean>(false);
+
     return (
-        <>
+        <div className="select-none">
             <div className="fixed w-screen h-screen bg-[#F1F2F5] -z-50"></div>
             <div className="fixed w-screen h-16 bg-[#282828] text-[#9d9d9d] z-30">
                 <div className="flex justify-between items-center h-full px-3 xl:px-32 2xl:px-96 transition-all duration-1000">
@@ -28,9 +33,24 @@ export default function Navigation() {
                             Trade
                         </div>
                     </div>
-                    <ConnectButton />
+                    <div className="flex gap-10 items-center">
+                        <div className="relative group">
+                            <UserRoundCog className="cursor-pointer" />
+                            <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                                <div className="flex flex-col gap-3 items-center w-64 h-auto border rounded-3xl mt-5 p-1">
+                                    <span>UserName: ********************</span>
+                                    <span>LinkedSuiAddr: 0x665e...ad80</span>
+                                    <div className="cursor-pointer" onClick={() => setIsBinding(true)}>ReLink</div>
+                                </div>
+                            </div>
+                        </div>
+                        <ConnectButton />
+                    </div>
                 </div>
             </div>
-        </>
+            {
+                isBinding && <Bind setIsBinding={setIsBinding} />
+            }
+        </div>
     )
 }
