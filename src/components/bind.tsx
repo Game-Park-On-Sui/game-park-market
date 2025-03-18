@@ -4,6 +4,7 @@ import {ChangeEvent, Dispatch, SetStateAction, useEffect, useState} from "react"
 
 export default function Bind({setIsBinding}: {setIsBinding: Dispatch<SetStateAction<boolean>>}) {
     const [userName, setUserName] = useState<string>("");
+    const [oldPassword, setOldPassword] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -24,6 +25,13 @@ export default function Bind({setIsBinding}: {setIsBinding: Dispatch<SetStateAct
         if (!checkInput(newUserName))
             return;
         setUserName(newUserName);
+    }
+
+    const changeOldPassword = (e: ChangeEvent<HTMLInputElement>) => {
+        const newPassword = e.target.value.trim();
+        if (!checkInput(newPassword))
+            return;
+        setOldPassword(newPassword);
     }
 
     const changePassword = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +61,10 @@ export default function Bind({setIsBinding}: {setIsBinding: Dispatch<SetStateAct
                     <div className="flex flex-col gap-1 items-start">
                         <span>User Name:</span>
                         <input className={"focus:outline-none " + (userName.length > 0 ? "text-[#041f4b]" : "")} placeholder="User Name" value={userName} onChange={changeUserName} />
+                    </div>
+                    <div className="flex flex-col gap-1 items-start">
+                        <span>Old Password:</span>
+                        <input className={"focus:outline-none"} placeholder="Old Password" type={"password"} value={oldPassword} onChange={changeOldPassword} />
                     </div>
                     <div className="flex flex-col gap-1 items-start">
                         <span>Password:</span>
