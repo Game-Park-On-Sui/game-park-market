@@ -2,7 +2,7 @@
 
 import {createSlice, ThunkDispatch, UnknownAction} from "@reduxjs/toolkit";
 import {Dispatch} from "react";
-import {getBalance} from "@/libs/contracts";
+import {getBalance, getInfo} from "@/libs/contracts";
 
 export type SwapTokenType = {
     name: string,
@@ -10,11 +10,17 @@ export type SwapTokenType = {
     balance: number
 }
 
+export type LinkedUserInfo = {
+    name: string,
+    isLinked: boolean
+}
+
 export type initialStateType = {
     account: string,
     tab: number,
     swapTokenInfo: [SwapTokenType, SwapTokenType],
-    showWaiting: boolean
+    showWaiting: boolean,
+    linkedUserInfo: LinkedUserInfo
 }
 
 const initialState: initialStateType = {
@@ -32,7 +38,11 @@ const initialState: initialStateType = {
             balance: 0
         }
     ],
-    showWaiting: false
+    showWaiting: false,
+    linkedUserInfo: {
+        name: "",
+        isLinked: false
+    }
 }
 
 const pageInfoStore = createSlice({
@@ -51,11 +61,15 @@ const pageInfoStore = createSlice({
         },
         setShowWaiting(state, action: { payload: boolean }) {
             state.showWaiting = action.payload;
+        },
+        setLinkedUserInfo(state, action: { payload: string }) {
+            state.linkedUserInfo.name = action.payload;
+            state.linkedUserInfo.isLinked = action.payload !== "";
         }
     }
 });
 
-const {setAccount, setTab, setSwapTokenInfo, setShowWaiting} = pageInfoStore.actions;
+const {setAccount, setTab, setSwapTokenInfo, setShowWaiting, setLinkedUserInfo} = pageInfoStore.actions;
 
 const refreshAccount = (account: string) => {
     return async (dispatch: ThunkDispatch<{
@@ -64,9 +78,11 @@ const refreshAccount = (account: string) => {
         dispatch(setAccount(account));
         if (!account) {
             dispatch(setSwapTokenInfo([0, 0]));
+            dispatch(setLinkedUserInfo(""));
             return;
         }
         dispatch(setSwapTokenInfo(await getBalance(account)));
+        dispatch(setLinkedUserInfo(await getInfo(account)));
     }
 }
 

@@ -1,6 +1,11 @@
 'use client'
 
 import {ChangeEvent, Dispatch, SetStateAction, useEffect, useState} from "react";
+import {useAppSelector, AppDispatch} from "@/store";
+import {bind, rebind} from "@/libs/contracts";
+import {network, networkConfig} from "@/configs/networkConfig";
+import {useDispatch} from "react-redux";
+import {refreshAccount, setShowWaiting} from "@/store/modules/pageInfo";
 
 export default function Bind({setIsBinding}: {setIsBinding: Dispatch<SetStateAction<boolean>>}) {
     const [userName, setUserName] = useState<string>("");
@@ -48,9 +53,56 @@ export default function Bind({setIsBinding}: {setIsBinding: Dispatch<SetStateAct
         setConfirmPassword(newPassword);
     }
 
+    const account = useAppSelector(state => state.pageInfo.account);
+    const linkedUserInfo = useAppSelector(state => state.pageInfo.linkedUserInfo);
+    const [bindErr, setBindErr] = useState<boolean>(false);
+
     useEffect(() => {
-        setIsVisible(userName.length > 0 && password.length > 0 && password === confirmPassword);
-    }, [userName, password, confirmPassword]);
+        setIsVisible(userName.length > 0 && password.length > 0 && password === confirmPassword && (!linkedUserInfo.isLinked || oldPassword.length > 0));
+        setBindErr(false);
+    }, [userName, password, confirmPassword, oldPassword, linkedUserInfo]);
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    const handleBind = async () => {
+        dispatch(setShowWaiting(true));
+        if (!linkedUserInfo.isLinked) {
+            const res = await bind(
+                networkConfig[network].variables.PackageID,
+                networkConfig[network].variables.Publisher,
+                networkConfig[network].variables.UserTable,
+                account,
+                userName,
+                password
+            );
+            if (res === "success") {
+                await dispatch(refreshAccount(account));
+                dispatch(setShowWaiting(false));
+                setIsBinding(false);
+            } else {
+                dispatch(setShowWaiting(false));
+                setBindErr(true);
+            }
+        } else {
+            const res = await rebind(
+                networkConfig[network].variables.PackageID,
+                networkConfig[network].variables.Publisher,
+                networkConfig[network].variables.UserTable,
+                account,
+                userName,
+                oldPassword,
+                password,
+            );
+            if (res === "success") {
+                await dispatch(refreshAccount(account));
+                dispatch(setShowWaiting(false));
+                setIsBinding(false);
+            } else {
+                dispatch(setShowWaiting(false));
+                setBindErr(true);
+            }
+        }
+    }
 
     return (
         <div className="fixed w-full h-full z-50">
@@ -62,10 +114,13 @@ export default function Bind({setIsBinding}: {setIsBinding: Dispatch<SetStateAct
                         <span>User Name:</span>
                         <input className={"focus:outline-none " + (userName.length > 0 ? "text-[#041f4b]" : "")} placeholder="User Name" value={userName} onChange={changeUserName} />
                     </div>
-                    <div className="flex flex-col gap-1 items-start">
-                        <span>Old Password:</span>
-                        <input className={"focus:outline-none"} placeholder="Old Password" type={"password"} value={oldPassword} onChange={changeOldPassword} />
-                    </div>
+                    {
+                        linkedUserInfo.isLinked &&
+                        <div className="flex flex-col gap-1 items-start">
+                            <span>Old Password:</span>
+                            <input className={"focus:outline-none"} placeholder="Old Password" type={"password"} value={oldPassword} onChange={changeOldPassword} />
+                        </div>
+                    }
                     <div className="flex flex-col gap-1 items-start">
                         <span>Password:</span>
                         <input className={"focus:outline-none"} placeholder="Password" type={"password"} value={password} onChange={changePassword} />
@@ -76,10 +131,11 @@ export default function Bind({setIsBinding}: {setIsBinding: Dispatch<SetStateAct
                     </div>
                     <div className="flex flex-col gap-2 items-start">
                         <span>Sui Address:</span>
-                        <input placeholder="UserName" disabled={true} />
+                        <input placeholder={account ? (account.slice(0, 6) + "..." + account.slice(-4)) : "Sui Address"} disabled={true} />
                     </div>
-                    <div className="opacity-100 text-xs text-gray-400">0-9 a-z A-Z(length not exceeding 20)</div>
-                    <div className={"w-full border rounded-full border-[#0a0e0f] bg-[#86C7FB] text-[#041f4b] text-center " + (!isVisible ? "opacity-60" : "hover:bg-[#9AD1FB] cursor-pointer opacity-100")}>Bind</div>
+                    <div className={"opacity-100 text-xs " + (bindErr ? "text-red-600" : "text-gray-400")}>{bindErr ? "Username already exists or Wrong old password(if rebinding)" : "0-9 a-z A-Z(length not exceeding 20)"}</div>
+                    <div className={"w-full border rounded-full border-[#0a0e0f] bg-[#86C7FB] text-[#041f4b] text-center " + (!isVisible ? "opacity-60" : "hover:bg-[#9AD1FB] cursor-pointer opacity-100")}
+                         onClick={handleBind}>Bind</div>
                 </div>
             </div>
         </div>

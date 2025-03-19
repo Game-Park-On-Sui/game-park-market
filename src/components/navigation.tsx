@@ -20,6 +20,8 @@ export default function Navigation() {
         dispatch(refreshAccount(account ? account.address : ""));
     }, [account, dispatch]);
 
+    const linkedUserInfo = useAppSelector(state => state.pageInfo.linkedUserInfo);
+
     return (
         <div className="select-none">
             <div className="fixed w-screen h-screen bg-[#F1F2F5] -z-50"></div>
@@ -43,9 +45,9 @@ export default function Navigation() {
                             <UserRoundCog className="cursor-pointer" />
                             <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                                 <div className="flex flex-col gap-3 items-center w-64 h-auto border rounded-3xl mt-5 p-1">
-                                    <span>UserName: ********************</span>
-                                    <span>LinkedSuiAddr: 0x665e...ad80</span>
-                                    <div className="cursor-pointer" onClick={() => setIsBinding(true)}>ReLink</div>
+                                    <span>{"UserName: " + (linkedUserInfo.isLinked ? linkedUserInfo.name : "********************")}</span>
+                                    <span>{"LinkedSuiAddr: " + (account ? (account.address.slice(0, 6) + "..." + account.address.slice(-4)) : "0x665e...ad80")}</span>
+                                    <div className="cursor-pointer" onClick={() => setIsBinding(true)}>{linkedUserInfo.isLinked ? "ReLink" : "Link"}</div>
                                 </div>
                             </div>
                         </div>

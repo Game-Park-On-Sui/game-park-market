@@ -9,21 +9,23 @@
         "react-dom": "^19.0.0",
       },
       "devDependencies": {
-        "@eslint/eslintrc": "^3",
-        "@mysten/dapp-kit": "^0.14.50",
-        "@mysten/sui": "^1.22.0",
+        "@eslint/eslintrc": "^3.3.0",
+        "@mysten/dapp-kit": "^0.14.53",
+        "@mysten/sui": "^1.24.0",
         "@reduxjs/toolkit": "^2.6.1",
-        "@tailwindcss/postcss": "^4",
-        "@tanstack/react-query": "^5.67.3",
-        "@types/node": "^20",
-        "@types/react": "^19",
-        "@types/react-dom": "^19",
-        "eslint": "^9",
+        "@tailwindcss/postcss": "^4.0.14",
+        "@tanstack/react-query": "^5.68.0",
+        "@types/crypto-js": "^4.2.2",
+        "@types/node": "^20.17.24",
+        "@types/react": "^19.0.11",
+        "@types/react-dom": "^19.0.4",
+        "crypto-js": "^4.2.0",
+        "eslint": "^9.22.0",
         "eslint-config-next": "15.2.1",
         "lucide-react": "^0.479.0",
         "react-redux": "^9.2.0",
-        "tailwindcss": "^4",
-        "typescript": "^5",
+        "tailwindcss": "^4.0.14",
+        "typescript": "^5.8.2",
       },
     },
   },
@@ -260,6 +262,8 @@
 
     "@tanstack/react-query": ["@tanstack/react-query@5.68.0", "", { "dependencies": { "@tanstack/query-core": "5.68.0" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-mMOdGDKlwTP/WV72QqSNf4PAMeoBp/DqBHQ222wBfb51Looi8QUqnCnb9O98ZgvNISmy6fzxRGBJdZ+9IBvX2Q=="],
 
+    "@types/crypto-js": ["@types/crypto-js@4.2.2", "", {}, "sha512-sDOLlVbHhXpAUAL0YHDUUwDZf3iN4Bwi4W6a0W0b+QcAezUbRtH4FVb+9J4h+XFPW7l/gQ9F8qC7P+Ec4k8QVQ=="],
+
     "@types/estree": ["@types/estree@1.0.6", "", {}, "sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw=="],
 
     "@types/json-schema": ["@types/json-schema@7.0.15", "", {}, "sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA=="],
@@ -387,6 +391,8 @@
     "concat-map": ["concat-map@0.0.1", "", {}, "sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg=="],
 
     "cross-spawn": ["cross-spawn@7.0.6", "", { "dependencies": { "path-key": "^3.1.0", "shebang-command": "^2.0.0", "which": "^2.0.1" } }, "sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA=="],
+
+    "crypto-js": ["crypto-js@4.2.0", "", {}, "sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q=="],
 
     "css-what": ["css-what@6.1.0", "", {}, "sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw=="],
 

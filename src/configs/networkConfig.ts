@@ -2,9 +2,22 @@ import {getFullnodeUrl, SuiClient} from "@mysten/sui/client";
 import {createNetworkConfig} from "@mysten/dapp-kit";
 import {Transaction} from "@mysten/sui/transactions";
 
-const network = "testnet";
+type Network = "mainnet" | "testnet";
+
+const network = (process.env.NEXT_PUBLIC_NETWORK as Network) || "testnet";
 
 const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkConfig({
+    mainnet: {
+        url: getFullnodeUrl("mainnet"),
+        variables: {
+            PackageID: "",
+            UpgradeCap: "",
+            Publisher: "",
+            GPTreasuryCap: "",
+            Pool: "",
+            UserTable: ""
+        }
+    },
     testnet: {
         url: getFullnodeUrl("testnet"),
         variables: {
