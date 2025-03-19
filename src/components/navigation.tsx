@@ -1,19 +1,24 @@
 'use client'
 
 import Image from "next/image";
-import {ConnectButton} from "@mysten/dapp-kit";
+import {ConnectButton, useCurrentAccount} from "@mysten/dapp-kit";
 import {useAppSelector, AppDispatch} from "@/store";
 import {useDispatch} from "react-redux";
-import {setTab} from "@/store/modules/pageInfo";
+import {refreshAccount, setTab} from "@/store/modules/pageInfo";
 import {UserRoundCog} from "lucide-react";
-import Bind from "@/components/bind";
-import {useState} from "react";
+import {Bind} from "@/components";
+import {useEffect, useState} from "react";
 
 export default function Navigation() {
     const tab = useAppSelector(state => state.pageInfo.tab);
     const dispatch = useDispatch<AppDispatch>();
 
     const [isBinding, setIsBinding] = useState<boolean>(false);
+
+    const account = useCurrentAccount();
+    useEffect(() => {
+        dispatch(refreshAccount(account ? account.address : ""));
+    }, [account, dispatch]);
 
     return (
         <div className="select-none">

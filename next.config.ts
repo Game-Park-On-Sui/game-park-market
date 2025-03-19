@@ -2,10 +2,17 @@ import type {NextConfig} from "next";
 
 const nextConfig: NextConfig = {
     /* config options here */
-    output: 'export',
     images: {
-        unoptimized: true
-    }
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'archive.cetus.zone',
+                port: '',
+                pathname: '/assets/image/sui/sui.png',
+                search: '',
+            },
+        ],
+    },
 };
 
 export default nextConfig;
