@@ -57,6 +57,8 @@ export default function Swap() {
     const account = useAppSelector(state => state.pageInfo.account);
 
     const handleSwap = async () => {
+        if (state !== 2)
+            return;
         if (swapType === 0) {
             await buy({
                 amount: Number(inAmount) * (10 ** 9),

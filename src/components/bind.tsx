@@ -58,13 +58,15 @@ export default function Bind({setIsBinding}: {setIsBinding: Dispatch<SetStateAct
     const [bindErr, setBindErr] = useState<boolean>(false);
 
     useEffect(() => {
-        setIsVisible(userName.length > 0 && password.length > 0 && password === confirmPassword && (!linkedUserInfo.isLinked || oldPassword.length > 0));
+        setIsVisible(account !== "" && userName.length > 0 && password.length > 0 && password === confirmPassword && (!linkedUserInfo.isLinked || oldPassword.length > 0));
         setBindErr(false);
-    }, [userName, password, confirmPassword, oldPassword, linkedUserInfo]);
+    }, [account, userName, password, confirmPassword, oldPassword, linkedUserInfo]);
 
     const dispatch = useDispatch<AppDispatch>();
 
     const handleBind = async () => {
+        if (!isVisible)
+            return;
         dispatch(setShowWaiting(true));
         if (!linkedUserInfo.isLinked) {
             const res = await bind(
