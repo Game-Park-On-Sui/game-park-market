@@ -118,3 +118,9 @@ entry fun withdraw(_: &Publisher, treasury: &GPTreasuryCap, pool: &mut Pool, ctx
     assert!(pool.earned.value() > 0, E_Not_Withdraw);
     transfer::public_transfer(pool.earned.withdraw_all().into_coin(ctx), ctx.sender());
 }
+
+public entry fun charity_invest(pool: &mut Pool, in: Coin<SUI>) {
+    // Invest in in-game rewards that are generated out of thin air
+    // In the future, staking tokens to earn income will be an alternative form
+    pool.earned.join(in.into_balance());
+}
