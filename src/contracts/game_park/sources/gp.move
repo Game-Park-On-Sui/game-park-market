@@ -124,3 +124,8 @@ public entry fun charity_invest(pool: &mut Pool, in: Coin<SUI>) {
     // In the future, staking tokens to earn income will be an alternative form
     pool.earned.join(in.into_balance());
 }
+
+public fun draw_rewards(_: &Publisher, treasury: &mut GPTreasuryCap, pool: &mut Pool, amount: u64, ctx: &mut TxContext): Coin<GP> {
+    pool.funds.join(pool.earned.split(amount * Sui_Decimals / Exchange_Ratio_In));
+    mint(treasury, amount, ctx)
+}

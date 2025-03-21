@@ -21,12 +21,12 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
     testnet: {
         url: getFullnodeUrl("testnet"),
         variables: {
-            PackageID: "0x6c6f2aebf504f816d0fa28058f937402a23abccc2c2125f0f5964d8b82e86d6d",
-            UpgradeCap: "0xcb6999a3d85909ddc26747378016231dec68e782e1f0e808acd11087347de012",
-            Publisher: "0x145d8952e628077dfde569535fe36250f5d36b632f66d689b26f4ae67f84752d",
-            GPTreasuryCap: "0x0f29ba58784578dc62369ef32f7ad90c97b357a4e279e2fe4fd81e61f0a66007",
-            Pool: "0x8afa953a2801c5cfb5672e03f1faf93fa6b993170279d3a2e4088cc2df0b9bca",
-            UserTable: "0xd95b3ff7dc99ccdcc422353790d0fed3154d25bd0a3cf7d87414800fca8724a9"
+            PackageID: "0x4db1c630558c5c1d9b648b253875750a5dfd5cb8d116392f580cbb21928e9198",
+            UpgradeCap: "0x0aed9c31475130cc4696e37bd78a805c09f8c7efc5026c6f723c9c6bd0162691",
+            Publisher: "0xc07f133e1187d68e674ff071d29c5d886a89950ac94cf5650451083603573692",
+            GPTreasuryCap: "0xbd5eb7ca80a5e46e6f3dc782a50f582411a984819924a5b8c161486492b38d78",
+            Pool: "0x2ee15f3d9acda37e0b7c4e486226c4171998e6db0dc39113d93e43e44c54365f",
+            UserTable: "0x1d3f8e242b212d08fe552f3fb9908b61f97984ab5709acb1e1d208406e199a2d"
         }
     }
 });
