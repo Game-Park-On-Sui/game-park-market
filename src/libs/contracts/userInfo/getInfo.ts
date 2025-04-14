@@ -20,14 +20,14 @@ type NameContentType = {
     }
 }
 
-async function getDynamic(account: string, parentId: string, cursor?: string | null | undefined) {
+async function getDynamic(account: string, parentId: string, cursor: string | null | undefined): Promise<string> {
     const res = await suiClient.getDynamicFields({
         parentId,
         cursor
     });
     const found = res.data.find(info => (info.name.value as string) === account);
     if (!found)
-        return await getDynamic(account, parentId, res.nextCursor);
+        return res.hasNextPage ? await getDynamic(account, parentId, res.nextCursor) : "";
     const info = await suiClient.getObject({
         id: found.objectId,
         options: {
@@ -45,5 +45,5 @@ export default async function getInfo(account: string) {
         }
     });
     const content = userTable.data?.content as unknown as ContentType;
-    return await getDynamic(account, content.fields.addr_name.fields.id.id);
+    return await getDynamic(account, content.fields.addr_name.fields.id.id, null);
 }
