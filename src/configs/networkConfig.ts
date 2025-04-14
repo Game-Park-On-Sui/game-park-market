@@ -17,6 +17,12 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
                 GPTreasuryCap: "",
                 Pool: "",
                 UserTable: ""
+            },
+            Kiosk: {
+                PackageID: "",
+                UpgradeCap: "",
+                Publisher: "",
+                GameParkKioskCap: ""
             }
         }
     },
@@ -30,6 +36,12 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
                 GPTreasuryCap: "0x700a67c15dca2cbef1b3ebaaafb00b55fd634726d3d0345e36dc548c24472879",
                 Pool: "0xf9e962ed230c98064612d0d775c44fb54f7ed024e73dabbb2a153484d91dbea3",
                 UserTable: "0x55b6cccc67226ec748aa9f932705c01dd226db3b5aa9527b8ba968cd04114ee2"
+            },
+            Kiosk: {
+                PackageID: "0x867cf4393eb30149fc99dfac86623b905f699f403f1c14b37a769defbe84ce8f",
+                UpgradeCap: "0x19d7f1d4dd4766f506ad4f2701a0437e37195adf4b4129a620818b2f38d8ebc9",
+                Publisher: "0x3c95204812e719d08c0d1bee957532336bfc3c847433586731b647eb2bf06594",
+                GameParkKioskCap: "0x75fb0c34c82d5633805df715150072e4c88fe1d29b8f0cf04101a4f817d99511"
             }
         }
     }
