@@ -89,7 +89,7 @@ public fun swap_out(count: u64): u64 {
     count * Sui_Decimals / Exchange_Ratio_In * Exchange_Ratio_Out / 100
 }
 
-entry fun consume(treasury: &mut GPTreasuryCap, pool: &mut Pool, in: Coin<GP>) {
+public fun consume(treasury: &mut GPTreasuryCap, pool: &mut Pool, in: Coin<GP>) {
     // burn
     let count = burn(treasury, in.into_balance());
     // check zero
