@@ -70,9 +70,9 @@ export default function Bind({setIsBinding}: {setIsBinding: Dispatch<SetStateAct
         dispatch(setShowWaiting(true));
         if (!linkedUserInfo.isLinked) {
             const res = await bind(
-                networkConfig[network].variables.PackageID,
-                networkConfig[network].variables.Publisher,
-                networkConfig[network].variables.UserTable,
+                networkConfig[network].variables.GP.PackageID,
+                networkConfig[network].variables.GP.Publisher,
+                networkConfig[network].variables.GP.UserTable,
                 account,
                 userName,
                 password
@@ -87,9 +87,9 @@ export default function Bind({setIsBinding}: {setIsBinding: Dispatch<SetStateAct
             }
         } else {
             const res = await rebind(
-                networkConfig[network].variables.PackageID,
-                networkConfig[network].variables.Publisher,
-                networkConfig[network].variables.UserTable,
+                networkConfig[network].variables.GP.PackageID,
+                networkConfig[network].variables.GP.Publisher,
+                networkConfig[network].variables.GP.UserTable,
                 account,
                 userName,
                 oldPassword,

@@ -39,7 +39,7 @@ async function getDynamic(account: string, parentId: string, cursor?: string | n
 
 export default async function getInfo(account: string) {
     const userTable = await suiClient.getObject({
-        id: networkConfig[network].variables.UserTable,
+        id: networkConfig[network].variables.GP.UserTable,
         options: {
             showContent: true
         }

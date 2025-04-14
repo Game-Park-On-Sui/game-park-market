@@ -9,12 +9,12 @@ export const swapSuiToGPTx = createBetterTxFactory<{
 }>((tx, networkVariables, params) => {
     tx.setSender(params.sender);
     tx.moveCall({
-        package: networkVariables.PackageID,
+        package: networkVariables.GP.PackageID,
         module: "gp",
         function: "buy",
         arguments: [
-            tx.object(networkVariables.GPTreasuryCap),
-            tx.object(networkVariables.Pool),
+            tx.object(networkVariables.GP.GPTreasuryCap),
+            tx.object(networkVariables.GP.Pool),
             coinWithBalance({
                 balance: params.amount
             })
@@ -29,15 +29,15 @@ export const swapGPToSuiTx = createBetterTxFactory<{
 }>((tx, networkVariables, params) => {
     tx.setSender(params.sender);
     tx.moveCall({
-        package: networkVariables.PackageID,
+        package: networkVariables.GP.PackageID,
         module: "gp",
         function: "sell",
         arguments: [
-            tx.object(networkVariables.GPTreasuryCap),
-            tx.object(networkVariables.Pool),
+            tx.object(networkVariables.GP.GPTreasuryCap),
+            tx.object(networkVariables.GP.Pool),
             coinWithBalance({
                 balance: params.amount,
-                type: `${networkVariables.PackageID}::gp::GP`
+                type: `${networkVariables.GP.PackageID}::gp::GP`
             })
         ]
     });
