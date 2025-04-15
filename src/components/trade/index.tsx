@@ -11,15 +11,15 @@ const TradeType = ["Buy", "Sell"];
 export default function Trade() {
     const [tab, setTab] = useState<number>(0);
     const [tradeType, setTradeType] = useState<number>(0);
-    const [array, setArray] = useState<(GameInfoType[])[]>([]);
-    const jumpingGame = useAppSelector(state => state.pageInfo.gameInfo);
+    const [array, setArray] = useState<GameInfoType[]>([]);
+    const sellingJumpingGame = useAppSelector(state => state.pageInfo.gameInfo);
     useEffect(() => {
-        if (tab === 0 && tradeType === 1) {
-            setArray([jumpingGame]);
+        if (tab === 0 && tradeType === 1 && sellingJumpingGame) {
+            setArray([sellingJumpingGame]);
         } else {
             setArray([]);
         }
-    }, [tab, tradeType, jumpingGame]);
+    }, [tab, tradeType, sellingJumpingGame]);
 
     return (
         <div className="h-[80vh] w-screen">

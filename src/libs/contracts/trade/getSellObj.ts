@@ -26,7 +26,7 @@ type DataPoolType = {
     }
 }
 
-export type GameInfoType = {
+type InnerGameInfoType = {
     fields: {
         key: string,
         value: {
@@ -47,13 +47,25 @@ type UserInfoType = {
             fields: {
                 hash_data: {
                     fields: {
-                        contents: GameInfoType[]
+                        contents: InnerGameInfoType[]
                     }
                 },
                 steps: string
             }
         }
     }
+}
+
+export type GameInfoType = {
+    infos: {
+        list: string,
+        row: string,
+        end: string,
+        cur_step_paid: string,
+        final_reward: string,
+    }[],
+    owner: string,
+    objectID: string
 }
 
 async function getUserInfoID(id: string, cursor: string | null | undefined, nftID: string): Promise<string | undefined> {
@@ -77,10 +89,10 @@ async function getUserInfo(id: string) {
 
 export async function getGameInfo(owner: string) {
     if (!owner)
-        return [];
+        return undefined;
     const nftID = await getNFTID(owner, null);
     if (!nftID)
-        return [];
+        return undefined;
     const dataPool = await suiClient.getObject({
         id: networkConfig[network].variables.Jumping.DataPool,
         options: {
@@ -89,7 +101,22 @@ export async function getGameInfo(owner: string) {
     });
     const userInfoID = await getUserInfoID((dataPool.data?.content as unknown as DataPoolType).fields.pool_table.fields.id.id, null, nftID);
     if (!userInfoID)
-        return [];
+        return undefined;
     const userInfo = await getUserInfo(userInfoID);
-    return userInfo.fields.value.fields.hash_data.fields.contents;
+    const contents = userInfo.fields.value.fields.hash_data.fields.contents;
+    const gameInfo: GameInfoType = {
+        infos: [],
+        owner,
+        objectID: nftID
+    }
+    for (let i = 0; i < contents.length; i++) {
+        gameInfo.infos.push({
+            list: contents[i].fields.value.fields.list.toString(),
+            row: contents[i].fields.value.fields.row.toString(),
+            end: contents[i].fields.value.fields.end.toString(),
+            cur_step_paid: contents[i].fields.value.fields.cur_step_paid.toString(),
+            final_reward: contents[i].fields.value.fields.final_reward.toString(),
+        })
+    }
+    return gameInfo;
 }

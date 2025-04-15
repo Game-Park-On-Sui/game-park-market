@@ -21,7 +21,7 @@ export type initialStateType = {
     swapTokenInfo: [SwapTokenType, SwapTokenType],
     showWaiting: boolean,
     linkedUserInfo: LinkedUserInfo,
-    gameInfo: GameInfoType[]
+    gameInfo: GameInfoType | null | undefined
 }
 
 const initialState: initialStateType = {
@@ -44,7 +44,7 @@ const initialState: initialStateType = {
         name: "",
         isLinked: false
     },
-    gameInfo: []
+    gameInfo: null
 }
 
 const pageInfoStore = createSlice({
@@ -68,7 +68,7 @@ const pageInfoStore = createSlice({
             state.linkedUserInfo.name = action.payload;
             state.linkedUserInfo.isLinked = action.payload !== "";
         },
-        setGameInfo(state, action: { payload: GameInfoType[] }) {
+        setGameInfo(state, action: { payload: GameInfoType | null | undefined }) {
             state.gameInfo = action.payload;
         }
     }
@@ -84,7 +84,7 @@ const refreshAccount = (account: string) => {
         if (!account) {
             dispatch(setSwapTokenInfo([0, 0]));
             dispatch(setLinkedUserInfo(""));
-            dispatch(setGameInfo([]));
+            dispatch(setGameInfo(null));
             return;
         }
         dispatch(setSwapTokenInfo(await getBalance(account)));
