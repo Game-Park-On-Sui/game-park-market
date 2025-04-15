@@ -20,8 +20,8 @@ export default function Home() {
                         <Trade/>
                 }
             </div>
-            {showWaiting && <Waiting />}
             {sellingCard && <InputPrice nftID={sellingCard} />}
+            {showWaiting && <Waiting />}
         </>
     );
 }

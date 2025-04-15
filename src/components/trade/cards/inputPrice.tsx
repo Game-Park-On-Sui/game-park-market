@@ -1,10 +1,12 @@
 'use client'
 
 import {useDispatch} from "react-redux";
-import {AppDispatch} from "@/store";
-import {setSellingCard} from "@/store/modules/pageInfo";
+import {AppDispatch, useAppSelector} from "@/store";
+import {refreshAccount, setSellingCard, setShowWaiting} from "@/store/modules/pageInfo";
 import {Delete} from "lucide-react";
 import {ChangeEvent, useState} from "react";
+import {useBetterSignAndExecuteTransaction} from "@/hooks";
+import {createPlaceNFTTx} from "@/libs/contracts";
 
 export default function InputPrice({nftID}: {nftID: string}) {
     const dispatch = useDispatch<AppDispatch>();
@@ -23,6 +25,26 @@ export default function InputPrice({nftID}: {nftID: string}) {
         setPrice(finalAmount);
     }
 
+    const {handleSignAndExecuteTransaction: place} = useBetterSignAndExecuteTransaction({
+        tx: createPlaceNFTTx,
+        waitForTx: true
+    });
+    const account = useAppSelector(state => state.pageInfo.account);
+    const handleClickConfirm = async () => {
+        await place({
+            nftID,
+            price: Number(price)
+        }).beforeExecute(() => {
+            dispatch(setShowWaiting(true));
+        }).onError(err => {
+            console.error(err);
+            dispatch(setShowWaiting(false));
+        }).onSuccess(async () => {
+            await dispatch(refreshAccount(account));
+            dispatch(setShowWaiting(false));
+        }).onExecute();
+    }
+
     return (
         <div className="fixed w-full h-full z-50 select-none">
             <div className="w-full h-full bg-black opacity-60" onClick={() => dispatch(setSellingCard(""))}></div>
@@ -37,7 +59,8 @@ export default function InputPrice({nftID}: {nftID: string}) {
                         </div>
                         <span className="text-[#041f4b]">{`ObjectID: ${nftID.slice(0, 6)}...${nftID.slice(-4)}`}</span>
                     </div>
-                    <div className={"w-1/2 h-8 rounded-full border-2 border-[#0a0e0f] bg-[#86C7FB] mb-20 text-center leading-7 text-[#0a0e0f] " + (price ? "hover:bg-[#9AD1FB] cursor-pointer" : "opacity-60")}>{price ? "Confirm" : "Please Enter Price"}</div>
+                    <div className={"w-1/2 h-8 rounded-full border-2 border-[#0a0e0f] bg-[#86C7FB] mb-20 text-center leading-7 text-[#0a0e0f] " + (price ? "hover:bg-[#9AD1FB] cursor-pointer" : "opacity-60")}
+                         onClick={price ? handleClickConfirm : () => {}}>{price ? "Confirm" : "Please Enter Price"}</div>
                 </div>
             </div>
         </div>
