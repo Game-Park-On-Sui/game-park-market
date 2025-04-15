@@ -2,7 +2,7 @@
 
 import {createSlice, ThunkDispatch, UnknownAction} from "@reduxjs/toolkit";
 import {Dispatch} from "react";
-import {getBalance, getInfo} from "@/libs/contracts";
+import {GameInfoType, getBalance, getGameInfo, getInfo} from "@/libs/contracts";
 
 export type SwapTokenType = {
     name: string,
@@ -20,7 +20,8 @@ export type initialStateType = {
     tab: number,
     swapTokenInfo: [SwapTokenType, SwapTokenType],
     showWaiting: boolean,
-    linkedUserInfo: LinkedUserInfo
+    linkedUserInfo: LinkedUserInfo,
+    gameInfo: GameInfoType[]
 }
 
 const initialState: initialStateType = {
@@ -42,7 +43,8 @@ const initialState: initialStateType = {
     linkedUserInfo: {
         name: "",
         isLinked: false
-    }
+    },
+    gameInfo: []
 }
 
 const pageInfoStore = createSlice({
@@ -65,11 +67,14 @@ const pageInfoStore = createSlice({
         setLinkedUserInfo(state, action: { payload: string }) {
             state.linkedUserInfo.name = action.payload;
             state.linkedUserInfo.isLinked = action.payload !== "";
+        },
+        setGameInfo(state, action: { payload: GameInfoType[] }) {
+            state.gameInfo = action.payload;
         }
     }
 });
 
-const {setAccount, setTab, setSwapTokenInfo, setShowWaiting, setLinkedUserInfo} = pageInfoStore.actions;
+const {setAccount, setTab, setSwapTokenInfo, setShowWaiting, setLinkedUserInfo, setGameInfo} = pageInfoStore.actions;
 
 const refreshAccount = (account: string) => {
     return async (dispatch: ThunkDispatch<{
@@ -79,10 +84,12 @@ const refreshAccount = (account: string) => {
         if (!account) {
             dispatch(setSwapTokenInfo([0, 0]));
             dispatch(setLinkedUserInfo(""));
+            dispatch(setGameInfo([]));
             return;
         }
         dispatch(setSwapTokenInfo(await getBalance(account)));
         dispatch(setLinkedUserInfo(await getInfo(account)));
+        dispatch(setGameInfo(await getGameInfo(account)));
     }
 }
 

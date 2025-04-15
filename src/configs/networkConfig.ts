@@ -23,6 +23,12 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
                 UpgradeCap: "",
                 Publisher: "",
                 GameParkKioskCap: ""
+            },
+            Jumping: {
+                PackageID: "",
+                UpgradeCap: "",
+                Publisher: "",
+                DataPool: ""
             }
         }
     },
@@ -42,6 +48,12 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
                 UpgradeCap: "0x19d7f1d4dd4766f506ad4f2701a0437e37195adf4b4129a620818b2f38d8ebc9",
                 Publisher: "0x3c95204812e719d08c0d1bee957532336bfc3c847433586731b647eb2bf06594",
                 GameParkKioskCap: "0x75fb0c34c82d5633805df715150072e4c88fe1d29b8f0cf04101a4f817d99511"
+            },
+            Jumping: {
+                PackageID: "0x2d8b96580273eb7ef54ad125afd9f04a132f35f074e8622147332fab6ad14298",
+                UpgradeCap: "0x5421d353ddd2ca23daf7a007464eff7da6fbf775f6e3e105b3d0bdfd469f38c4",
+                Publisher: "0x9e7cc43bcdf5ca4f4bcf7457ca67f358a91390ed7406b9ee571716fa3967d60c",
+                DataPool: "0x26a7abfff3edf5ccd18f3bccc21fc1af02ef7c74d6cbaab3d4997fc302dd5f5d"
             }
         }
     }

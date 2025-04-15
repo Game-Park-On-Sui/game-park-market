@@ -2,6 +2,8 @@
 
 import {useEffect, useState} from "react";
 import {JumpingCard} from "@/components/trade/cards";
+import {useAppSelector} from "@/store";
+import {GameInfoType} from "@/libs/contracts";
 
 const TabTile = ["Jumping", "Soon..."];
 const TradeType = ["Buy", "Sell"];
@@ -9,13 +11,15 @@ const TradeType = ["Buy", "Sell"];
 export default function Trade() {
     const [tab, setTab] = useState<number>(0);
     const [tradeType, setTradeType] = useState<number>(0);
-    const [tempArray, setTempArray] = useState<number[]>([]);
+    const [array, setArray] = useState<(GameInfoType[])[]>([]);
+    const jumpingGame = useAppSelector(state => state.pageInfo.gameInfo);
     useEffect(() => {
-        const array: number[] = [];
-        for (let i = 0; i < 33; i++)
-            array.push(i);
-        setTempArray(array);
-    }, []);
+        if (tab === 0 && tradeType === 1) {
+            setArray([jumpingGame]);
+        } else {
+            setArray([]);
+        }
+    }, [tab, tradeType, jumpingGame]);
 
     return (
         <div className="h-[80vh] w-screen">
@@ -27,8 +31,8 @@ export default function Trade() {
                                 TabTile.map((title, index) => {
                                     return (
                                         <span key={index}
-                                              className={"w-24 rounded-full px-2 text-center cursor-pointer transition-all hover:opacity-100 " + (tradeType === index ? "bg-white" : "bg-[#afb3b5] opacity-60")}
-                                              onClick={() => setTradeType(index)}>
+                                              className={"w-24 rounded-full px-2 text-center cursor-pointer transition-all hover:opacity-100 " + (tab === index ? "bg-white" : "bg-[#afb3b5] opacity-60")}
+                                              onClick={() => setTab(index)}>
                                             {title}
                                         </span>
                                     );
@@ -40,8 +44,8 @@ export default function Trade() {
                                 TradeType.map((type, index) => {
                                     return (
                                         <span key={index}
-                                              className={"w-24 rounded-full px-2 text-center cursor-pointer transition-all hover:opacity-100 " + (tab === index ? "bg-white" : "bg-[#afb3b5] opacity-60")}
-                                              onClick={() => setTab(index)}>
+                                              className={"w-24 rounded-full px-2 text-center cursor-pointer transition-all hover:opacity-100 " + (tradeType === index ? "bg-white" : "bg-[#afb3b5] opacity-60")}
+                                              onClick={() => setTradeType(index)}>
                                             {type}
                                         </span>
                                     );
@@ -51,10 +55,12 @@ export default function Trade() {
                     </div>
                     <div className="w-full h-full flex gap-4 flex-wrap content-start overflow-auto">
                         {
-                            tempArray.map((idx) => {
+                            array.map((info, idx) => {
                                 return (
                                     <div key={idx}>
-                                        <JumpingCard/>
+                                        {
+                                            tab === 0 && tradeType === 1 && <JumpingCard info={info} />
+                                        }
                                     </div>
                                 );
                             })
