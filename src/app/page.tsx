@@ -1,6 +1,6 @@
 'use client'
 
-import {Swap, Waiting} from "@/components";
+import {Swap, Trade, Waiting} from "@/components";
 import {useAppSelector} from "@/store";
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
                         ?
                         <Swap/>
                         :
-                        <div>1</div>
+                        <Trade/>
                 }
             </div>
             {showWaiting && <Waiting />}
