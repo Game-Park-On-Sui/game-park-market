@@ -2,15 +2,19 @@
 
 import {GameInfoType} from "@/libs/contracts";
 import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/store";
+import {setSellingCard} from "@/store/modules/pageInfo";
 
 export default function JumpingCard({info}: {info: GameInfoType}) {
+    const dispatch = useDispatch<AppDispatch>();
     const [type, setType] = useState<number>(0);
     useEffect(() => {
         setType(info.infos.length > 1 ? 1 : 0)
     }, [info]);
 
     return (
-        <div className="relative w-36 h-36 text-xs hover:bg-gray-700 rounded-2xl transition-all duration-750 group overflow-hidden">
+        <div className="relative w-36 h-36 text-xs hover:bg-gray-700 rounded-2xl transition-all duration-750 group overflow-hidden cursor-pointer" onClick={() => dispatch(setSellingCard(info.objectID))}>
             <div className="absolute top-0 left-0 w-full h-full bg-[url(/BlackSquid-Removebg.png)] bg-contain bg-no-repeat bg-center opacity-60"></div>
             <div className="w-full h-full flex flex-col justify-end items-start pb-2 pl-1 group-hover:opacity-60">
                 <span>{`Owner: ${info.owner.slice(0, 6)}...${info.owner.slice(-4)}`}</span>

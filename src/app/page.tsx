@@ -2,10 +2,12 @@
 
 import {Swap, Trade, Waiting} from "@/components";
 import {useAppSelector} from "@/store";
+import {InputPrice} from "@/components/trade/cards";
 
 export default function Home() {
     const tab = useAppSelector(state => state.pageInfo.tab);
     const showWaiting = useAppSelector(state => state.pageInfo.showWaiting);
+    const sellingCard = useAppSelector(state => state.pageInfo.sellingCard);
 
     return (
         <>
@@ -19,6 +21,7 @@ export default function Home() {
                 }
             </div>
             {showWaiting && <Waiting />}
+            {sellingCard && <InputPrice nftID={sellingCard} />}
         </>
     );
 }

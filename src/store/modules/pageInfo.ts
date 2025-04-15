@@ -21,7 +21,8 @@ export type initialStateType = {
     swapTokenInfo: [SwapTokenType, SwapTokenType],
     showWaiting: boolean,
     linkedUserInfo: LinkedUserInfo,
-    gameInfo: GameInfoType | null | undefined
+    gameInfo: GameInfoType | null | undefined,
+    sellingCard: string
 }
 
 const initialState: initialStateType = {
@@ -44,7 +45,8 @@ const initialState: initialStateType = {
         name: "",
         isLinked: false
     },
-    gameInfo: null
+    gameInfo: null,
+    sellingCard: ""
 }
 
 const pageInfoStore = createSlice({
@@ -70,11 +72,14 @@ const pageInfoStore = createSlice({
         },
         setGameInfo(state, action: { payload: GameInfoType | null | undefined }) {
             state.gameInfo = action.payload;
+        },
+        setSellingCard(state, action: { payload: string }) {
+            state.sellingCard = action.payload;
         }
     }
 });
 
-const {setAccount, setTab, setSwapTokenInfo, setShowWaiting, setLinkedUserInfo, setGameInfo} = pageInfoStore.actions;
+const {setAccount, setTab, setSwapTokenInfo, setShowWaiting, setLinkedUserInfo, setGameInfo, setSellingCard} = pageInfoStore.actions;
 
 const refreshAccount = (account: string) => {
     return async (dispatch: ThunkDispatch<{
@@ -93,6 +98,6 @@ const refreshAccount = (account: string) => {
     }
 }
 
-export {setTab, setSwapTokenInfo, setShowWaiting};
+export {setTab, setSwapTokenInfo, setShowWaiting, setSellingCard};
 export {refreshAccount};
 export default pageInfoStore.reducer;
