@@ -50,10 +50,11 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
                 GameParkKioskCap: "0x75fb0c34c82d5633805df715150072e4c88fe1d29b8f0cf04101a4f817d99511"
             },
             Jumping: {
-                PackageID: "0x2d8b96580273eb7ef54ad125afd9f04a132f35f074e8622147332fab6ad14298",
-                UpgradeCap: "0x5421d353ddd2ca23daf7a007464eff7da6fbf775f6e3e105b3d0bdfd469f38c4",
-                Publisher: "0x9e7cc43bcdf5ca4f4bcf7457ca67f358a91390ed7406b9ee571716fa3967d60c",
-                DataPool: "0x26a7abfff3edf5ccd18f3bccc21fc1af02ef7c74d6cbaab3d4997fc302dd5f5d"
+                PackageID: "0xfc3db61c64914fd047cebc32d9008c3f4ae2a59354cb24c6a62c8a130e07f27b",
+                UpgradeCap: "0x4411e1b34740c34f494e1239f9a5345d0f1553c216cd5957e14b65a918be84f2",
+                Publisher: "0xc15d2ef63a2365f4588c2224056d0ca79d1a8773bb358e543db3b3237ae3dfe9",
+                DataPool: "0x13dfb54cb012db2c5cb9b1e100a75df583a4194832091a3bca672b13b2f00352",
+                EndlessGame: "0x272110c41c91fe634e8ba1810f88318a829553ab79b9f02444a1f9f91a0dc2d9"
             }
         }
     }
