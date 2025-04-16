@@ -28,7 +28,8 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
                 PackageID: "",
                 UpgradeCap: "",
                 Publisher: "",
-                DataPool: ""
+                DataPool: "",
+                EndlessGame: ""
             }
         }
     },
