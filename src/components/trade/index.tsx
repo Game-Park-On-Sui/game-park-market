@@ -13,13 +13,16 @@ export default function Trade() {
     const [tradeType, setTradeType] = useState<number>(0);
     const [array, setArray] = useState<GameInfoType[]>([]);
     const sellingJumpingGame = useAppSelector(state => state.pageInfo.gameInfo);
+    const marketJumpingGames = useAppSelector(state => state.pageInfo.marketGameInfos);
     useEffect(() => {
         if (tab === 0 && tradeType === 1 && sellingJumpingGame) {
             setArray([sellingJumpingGame]);
+        } else if (tab === 0 && tradeType === 0 && marketJumpingGames) {
+            setArray(marketJumpingGames);
         } else {
             setArray([]);
         }
-    }, [tab, tradeType, sellingJumpingGame]);
+    }, [tab, tradeType, sellingJumpingGame, marketJumpingGames]);
 
     return (
         <div className="h-[80vh] w-screen">
@@ -59,7 +62,7 @@ export default function Trade() {
                                 return (
                                     <div key={idx}>
                                         {
-                                            tab === 0 && tradeType === 1 && <JumpingCard info={info} />
+                                            tab === 0 && <JumpingCard info={info} />
                                         }
                                     </div>
                                 );

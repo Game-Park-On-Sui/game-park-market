@@ -2,13 +2,14 @@
 
 import {useDispatch} from "react-redux";
 import {AppDispatch, useAppSelector} from "@/store";
-import {refreshAccount, setSellingCard, setShowWaiting} from "@/store/modules/pageInfo";
+import {refreshAccount, setMarketCardPrice, setSellingCard, setShowWaiting} from "@/store/modules/pageInfo";
 import {Delete} from "lucide-react";
 import {ChangeEvent, useState} from "react";
 import {useBetterSignAndExecuteTransaction} from "@/hooks";
 import {createPlaceNFTTx} from "@/libs/contracts";
+import {createPurchaseTx} from "@/libs/contracts/trade/createPurchaseTx";
 
-export default function InputPrice({nftID}: {nftID: string}) {
+export default function InputPrice({nftID, marketPrice}: {nftID: string, marketPrice: string}) {
     const dispatch = useDispatch<AppDispatch>();
     const [price, setPrice] = useState<string>("");
     const changeInputPrice = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,24 +26,50 @@ export default function InputPrice({nftID}: {nftID: string}) {
         setPrice(finalAmount);
     }
 
+    const account = useAppSelector(state => state.pageInfo.account);
     const {handleSignAndExecuteTransaction: place} = useBetterSignAndExecuteTransaction({
         tx: createPlaceNFTTx,
         waitForTx: true
     });
-    const account = useAppSelector(state => state.pageInfo.account);
+    const ownedGameInfo = useAppSelector(state => state.pageInfo.gameInfo);
+    const {handleSignAndExecuteTransaction: purchase} = useBetterSignAndExecuteTransaction({
+        tx: createPurchaseTx,
+        waitForTx: true
+    });
     const handleClickConfirm = async () => {
-        await place({
-            nftID,
-            price: Number(price)
-        }).beforeExecute(() => {
-            dispatch(setShowWaiting(true));
-        }).onError(err => {
-            console.error(err);
-            dispatch(setShowWaiting(false));
-        }).onSuccess(async () => {
-            await dispatch(refreshAccount(account));
-            dispatch(setShowWaiting(false));
-        }).onExecute();
+        if (price) {
+            await place({
+                nftID,
+                price: Number(price)
+            }).beforeExecute(() => {
+                dispatch(setShowWaiting(true));
+            }).onError(err => {
+                console.error(err);
+                dispatch(setShowWaiting(false));
+            }).onSuccess(async () => {
+                await dispatch(refreshAccount(account));
+                dispatch(setShowWaiting(false));
+                dispatch(setSellingCard(""));
+                dispatch(setMarketCardPrice(""));
+            }).onExecute();
+        } else if (marketPrice) {
+            await purchase({
+                sender: account,
+                id: nftID,
+                price: Number(marketPrice),
+                ownedNFTID: ownedGameInfo?.objectID
+            }).beforeExecute(() => {
+                dispatch(setShowWaiting(true));
+            }).onError(err => {
+                console.error(err);
+                dispatch(setShowWaiting(false));
+            }).onSuccess(async () => {
+                await dispatch(refreshAccount(account));
+                dispatch(setShowWaiting(false));
+                dispatch(setSellingCard(""));
+                dispatch(setMarketCardPrice(""));
+            }).onExecute();
+        }
     }
 
     return (
@@ -52,15 +79,19 @@ export default function InputPrice({nftID}: {nftID: string}) {
                 <div className="flex flex-col items-center w-96 h-96 border border-black rounded-2xl bg-[#afb3b5]">
                     <Delete className="self-start cursor-pointer text-[#35a1f7] hover:text-[#196ae3] m-1" onClick={() => dispatch(setSellingCard(""))}/>
                     <div className="flex-1 flex flex-col gap-8 items-center">
-                        <span className="text-4xl mt-5 mb-5 text-[#041f4b]">Sell</span>
-                        <div>
+                        <span className="text-4xl mt-5 mb-5 text-[#041f4b]">{marketPrice ? "Buy" : "Sell"}</span>
+                        <div className="flex gap-2 items-center">
                             <span className="text-[#041f4b]">Price: </span>
-                            <input className="w-28 font-bold focus:outline-none px-1" placeholder={"InputPrice"} value={price} onChange={changeInputPrice} />
+                            {
+                                !marketPrice &&
+                                <input className="w-28 font-bold focus:outline-none px-1" placeholder={"InputPrice"} value={price} onChange={changeInputPrice} /> ||
+                                <div className="w-28 font-bold px-1">{marketPrice}</div>
+                            }
                         </div>
                         <span className="text-[#041f4b]">{`ObjectID: ${nftID.slice(0, 6)}...${nftID.slice(-4)}`}</span>
                     </div>
-                    <div className={"w-1/2 h-8 rounded-full border-2 border-[#0a0e0f] bg-[#86C7FB] mb-20 text-center leading-7 text-[#0a0e0f] " + (price ? "hover:bg-[#9AD1FB] cursor-pointer" : "opacity-60")}
-                         onClick={price ? handleClickConfirm : () => {}}>{price ? "Confirm" : "Please Enter Price"}</div>
+                    <div className={"w-1/2 h-8 rounded-full border-2 border-[#0a0e0f] bg-[#86C7FB] mb-20 text-center leading-7 text-[#0a0e0f] " + (price || marketPrice ? "hover:bg-[#9AD1FB] cursor-pointer" : "opacity-60")}
+                         onClick={price || marketPrice ? handleClickConfirm : () => {}}>{price ? "Confirm" : "Please Enter Price"}</div>
                 </div>
             </div>
         </div>

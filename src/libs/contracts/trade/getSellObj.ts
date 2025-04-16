@@ -65,7 +65,8 @@ export type GameInfoType = {
         final_reward: string,
     }[],
     owner: string,
-    objectID: string
+    objectID: string,
+    price?: string
 }
 
 async function getUserInfoID(id: string, cursor: string | null | undefined, nftID: string): Promise<string | undefined> {
@@ -87,12 +88,7 @@ async function getUserInfo(id: string) {
     return data.data?.content as unknown as UserInfoType;
 }
 
-export async function getGameInfo(owner: string) {
-    if (!owner)
-        return undefined;
-    const nftID = await getNFTID(owner, null);
-    if (!nftID)
-        return undefined;
+export async function getGameInfoByNFTID(owner: string, nftID: string, price?: string) {
     const dataPool = await suiClient.getObject({
         id: networkConfig[network].variables.Jumping.DataPool,
         options: {
@@ -107,7 +103,8 @@ export async function getGameInfo(owner: string) {
     const gameInfo: GameInfoType = {
         infos: [],
         owner,
-        objectID: nftID
+        objectID: nftID,
+        price,
     }
     for (let i = 0; i < contents.length; i++) {
         gameInfo.infos.push({
@@ -119,4 +116,13 @@ export async function getGameInfo(owner: string) {
         })
     }
     return gameInfo;
+}
+
+export async function getGameInfo(owner: string) {
+    if (!owner)
+        return undefined;
+    const nftID = await getNFTID(owner, null);
+    if (!nftID)
+        return undefined;
+    return getGameInfoByNFTID(owner, nftID);
 }

@@ -2,7 +2,7 @@
 
 import {createSlice, ThunkDispatch, UnknownAction} from "@reduxjs/toolkit";
 import {Dispatch} from "react";
-import {GameInfoType, getBalance, getGameInfo, getInfo} from "@/libs/contracts";
+import {GameInfoType, getBalance, getGameInfo, getInfo, getJumpingNFTInMarket} from "@/libs/contracts";
 
 export type SwapTokenType = {
     name: string,
@@ -22,7 +22,9 @@ export type initialStateType = {
     showWaiting: boolean,
     linkedUserInfo: LinkedUserInfo,
     gameInfo: GameInfoType | null | undefined,
-    sellingCard: string
+    sellingCard: string,
+    marketGameInfos: GameInfoType[] | null | undefined,
+    marketCardPrice: string
 }
 
 const initialState: initialStateType = {
@@ -46,7 +48,9 @@ const initialState: initialStateType = {
         isLinked: false
     },
     gameInfo: null,
-    sellingCard: ""
+    sellingCard: "",
+    marketGameInfos: null,
+    marketCardPrice: ""
 }
 
 const pageInfoStore = createSlice({
@@ -75,11 +79,27 @@ const pageInfoStore = createSlice({
         },
         setSellingCard(state, action: { payload: string }) {
             state.sellingCard = action.payload;
+        },
+        setMarketGameInfos(state, action: { payload: GameInfoType[] | null | undefined }) {
+            state.marketGameInfos = action.payload;
+        },
+        setMarketCardPrice(state, action: { payload: string | undefined }) {
+            state.marketCardPrice = action.payload ? action.payload : "";
         }
     }
 });
 
-const {setAccount, setTab, setSwapTokenInfo, setShowWaiting, setLinkedUserInfo, setGameInfo, setSellingCard} = pageInfoStore.actions;
+const {
+    setAccount,
+    setTab,
+    setSwapTokenInfo,
+    setShowWaiting,
+    setLinkedUserInfo,
+    setGameInfo,
+    setSellingCard,
+    setMarketGameInfos,
+    setMarketCardPrice
+} = pageInfoStore.actions;
 
 const refreshAccount = (account: string) => {
     return async (dispatch: ThunkDispatch<{
@@ -90,14 +110,22 @@ const refreshAccount = (account: string) => {
             dispatch(setSwapTokenInfo([0, 0]));
             dispatch(setLinkedUserInfo(""));
             dispatch(setGameInfo(null));
+            dispatch(setMarketGameInfos(await getJumpingNFTInMarket()));
             return;
         }
         dispatch(setSwapTokenInfo(await getBalance(account)));
         dispatch(setLinkedUserInfo(await getInfo(account)));
         dispatch(setGameInfo(await getGameInfo(account)));
+        dispatch(setMarketGameInfos(await getJumpingNFTInMarket()));
     }
 }
 
-export {setTab, setSwapTokenInfo, setShowWaiting, setSellingCard};
+export {
+    setTab,
+    setSwapTokenInfo,
+    setShowWaiting,
+    setSellingCard,
+    setMarketCardPrice
+};
 export {refreshAccount};
 export default pageInfoStore.reducer;
