@@ -18,7 +18,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
     title: "Game Park Market",
     description: "Freely Trade Assets In The Game Park.",
-    icons: "/GP-remove.png"
+    // icons: "/GP-remove.png"
+    icons: `${process.env.NEXT_PUBLIC_AGGREGATOR}/A2ABaDlQNjOYAJu9dGwbrz4YnzCku76U9qjL6dr0kF8`
 };
 
 export default function RootLayout({children}: Readonly<{ children: ReactNode }>) {

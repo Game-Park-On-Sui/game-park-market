@@ -38,7 +38,7 @@ const initialState: initialStateType = {
         },
         {
             name: "GP",
-            image: "/GP-remove.png",
+            image: `${process.env.NEXT_PUBLIC_AGGREGATOR}/A2ABaDlQNjOYAJu9dGwbrz4YnzCku76U9qjL6dr0kF8`,
             balance: 0
         }
     ],

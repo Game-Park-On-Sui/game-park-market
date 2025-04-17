@@ -11,6 +11,13 @@ const nextConfig: NextConfig = {
                 pathname: '/assets/image/sui/sui.png',
                 search: '',
             },
+            {
+                protocol: 'https',
+                hostname: 'mainnet-aggregator.hoh.zone',
+                port: '',
+                pathname: '/v1/blobs/*',
+                search: '',
+            }
         ],
     },
 };

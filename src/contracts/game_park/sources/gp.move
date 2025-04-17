@@ -35,7 +35,7 @@ fun init(otw: GP, ctx: &mut TxContext) {
         b"GP",
         b"Game Park Coin",
         b"The universal currency used in the Game Park.",
-        option::some(url::new_unsafe_from_bytes(b"https://github.com/zcy1024/game-park-market/blob/main/public/GP.png?raw=true")),
+        option::some(url::new_unsafe_from_bytes(b"https://mainnet-aggregator.hoh.zone/v1/blobs/FyGhvIOtfvviqRLDc-lnCSXNaPQNNiUFPbaXb9Gtjmc")),
         ctx
     );
 

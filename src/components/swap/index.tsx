@@ -132,7 +132,7 @@ export default function Swap() {
                 <div className="flex flex-col items-end gap-2">
                     <div className="opacity-0">100000000000</div>
                     <div className="flex gap-1 items-center">
-                        <Image src={swapTokenInfo.length > 0 ? swapTokenInfo[(swapType + 1) % 2].image : "/GP-remove.png"} alt="Swap Token 2" width={28} height={28}/>
+                        <Image src={swapTokenInfo.length > 0 ? swapTokenInfo[(swapType + 1) % 2].image : `${process.env.NEXT_PUBLIC_AGGREGATOR}/A2ABaDlQNjOYAJu9dGwbrz4YnzCku76U9qjL6dr0kF8`} alt="Swap Token 2" width={28} height={28}/>
                         <div>{swapTokenInfo.length > 0 ? swapTokenInfo[(swapType + 1) % 2].name : "GP"}</div>
                     </div>
                     <div className="flex gap-1 items-center text-[#567] text-sm">
