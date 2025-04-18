@@ -109,7 +109,7 @@ export default function Swap() {
                         </div>
                         <div className="flex gap-1 items-center text-[#567] text-sm">
                             <Wallet size={15}/>
-                            <span>{swapTokenInfo.length > 0 ? swapTokenInfo[swapType].balance : "1024"}</span>
+                            <span className="cursor-pointer" onClick={() => setInAmount(swapTokenInfo.length > 0 ? swapTokenInfo[swapType].balance.toString() : "")}>{swapTokenInfo.length > 0 ? swapTokenInfo[swapType].balance : "1024"}</span>
                         </div>
                     </div>
                 </div>
