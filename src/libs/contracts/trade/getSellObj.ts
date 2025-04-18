@@ -66,6 +66,7 @@ export type GameInfoType = {
     }[],
     owner: string,
     objectID: string,
+    steps: string,
     price?: string
 }
 
@@ -104,6 +105,7 @@ export async function getGameInfoByNFTID(owner: string, nftID: string, price?: s
         infos: [],
         owner,
         objectID: nftID,
+        steps: userInfo.fields.value.fields.steps,
         price,
     }
     for (let i = 0; i < contents.length; i++) {

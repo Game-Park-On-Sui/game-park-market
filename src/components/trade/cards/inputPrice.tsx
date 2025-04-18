@@ -9,7 +9,7 @@ import {useBetterSignAndExecuteTransaction} from "@/hooks";
 import {createPlaceNFTTx} from "@/libs/contracts";
 import {createPurchaseTx} from "@/libs/contracts/trade/createPurchaseTx";
 
-export default function InputPrice({nftID, marketPrice}: {nftID: string, marketPrice: string}) {
+export default function InputPrice({nftID, marketPrice, marketSteps}: {nftID: string, marketPrice: string, marketSteps: string}) {
     const dispatch = useDispatch<AppDispatch>();
     const [price, setPrice] = useState<string>("");
     const changeInputPrice = (e: ChangeEvent<HTMLInputElement>) => {
@@ -78,8 +78,9 @@ export default function InputPrice({nftID, marketPrice}: {nftID: string, marketP
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <div className="flex flex-col items-center w-96 h-96 border border-black rounded-2xl bg-[#afb3b5]">
                     <Delete className="self-start cursor-pointer text-[#35a1f7] hover:text-[#196ae3] m-1" onClick={() => dispatch(setSellingCard(""))}/>
-                    <div className="flex-1 flex flex-col gap-8 items-center">
-                        <span className="text-4xl mt-5 mb-5 text-[#041f4b]">{marketPrice ? "Buy" : "Sell"}</span>
+                    <div className="flex-1 flex flex-col gap-4 items-start">
+                        <span className="self-center text-4xl mt-5 mb-5 text-[#041f4b]">{marketPrice ? "Buy" : "Sell"}</span>
+                        <span className="text-[#041f4b]">{`Steps: ${marketSteps}`}</span>
                         <div className="flex gap-2 items-center">
                             <span className="text-[#041f4b]">Price: </span>
                             {

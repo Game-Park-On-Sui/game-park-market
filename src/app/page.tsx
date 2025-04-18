@@ -8,6 +8,7 @@ export default function Home() {
     const tab = useAppSelector(state => state.pageInfo.tab);
     const showWaiting = useAppSelector(state => state.pageInfo.showWaiting);
     const sellingCard = useAppSelector(state => state.pageInfo.sellingCard);
+    const marketCardSteps = useAppSelector(state => state.pageInfo.marketCardSteps);
     const marketCardPrice = useAppSelector(state => state.pageInfo.marketCardPrice);
 
     return (
@@ -21,7 +22,7 @@ export default function Home() {
                         <Trade/>
                 }
             </div>
-            {sellingCard && <InputPrice nftID={sellingCard} marketPrice={marketCardPrice} />}
+            {sellingCard && <InputPrice nftID={sellingCard} marketPrice={marketCardPrice} marketSteps={marketCardSteps} />}
             {showWaiting && <Waiting />}
         </>
     );

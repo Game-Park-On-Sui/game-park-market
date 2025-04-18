@@ -3,12 +3,13 @@
 import {GameInfoType} from "@/libs/contracts";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "@/store";
-import {setMarketCardPrice, setSellingCard} from "@/store/modules/pageInfo";
+import {setMarketCardPrice, setMarketCardSteps, setSellingCard} from "@/store/modules/pageInfo";
 
 export default function JumpingCard({info}: {info: GameInfoType}) {
     const dispatch = useDispatch<AppDispatch>();
     const handleClickCard = () => {
         dispatch(setSellingCard(info.objectID));
+        dispatch(setMarketCardSteps(info.steps));
         dispatch(setMarketCardPrice(info.price));
     }
 

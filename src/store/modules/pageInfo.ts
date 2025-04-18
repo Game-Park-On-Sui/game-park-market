@@ -24,7 +24,8 @@ export type initialStateType = {
     gameInfo: GameInfoType | null | undefined,
     sellingCard: string,
     marketGameInfos: GameInfoType[] | null | undefined,
-    marketCardPrice: string
+    marketCardPrice: string,
+    marketCardSteps: string,
 }
 
 const initialState: initialStateType = {
@@ -50,7 +51,8 @@ const initialState: initialStateType = {
     gameInfo: null,
     sellingCard: "",
     marketGameInfos: null,
-    marketCardPrice: ""
+    marketCardPrice: "",
+    marketCardSteps: "0",
 }
 
 const pageInfoStore = createSlice({
@@ -85,6 +87,9 @@ const pageInfoStore = createSlice({
         },
         setMarketCardPrice(state, action: { payload: string | undefined }) {
             state.marketCardPrice = action.payload ? action.payload : "";
+        },
+        setMarketCardSteps(state, action: { payload: string }) {
+            state.marketCardSteps = action.payload;
         }
     }
 });
@@ -98,7 +103,8 @@ const {
     setGameInfo,
     setSellingCard,
     setMarketGameInfos,
-    setMarketCardPrice
+    setMarketCardPrice,
+    setMarketCardSteps,
 } = pageInfoStore.actions;
 
 const refreshAccount = (account: string) => {
@@ -125,7 +131,8 @@ export {
     setSwapTokenInfo,
     setShowWaiting,
     setSellingCard,
-    setMarketCardPrice
+    setMarketCardPrice,
+    setMarketCardSteps,
 };
 export {refreshAccount};
 export default pageInfoStore.reducer;
