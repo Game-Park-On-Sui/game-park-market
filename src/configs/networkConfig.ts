@@ -51,11 +51,11 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
                 GameParkKioskCap: "0x42e45cc00451a346cbd76eb6c6ce0bf37cf028b5deb3744ead7ceaa5a610350f"
             },
             Jumping: {
-                PackageID: "",
-                UpgradeCap: "",
-                Publisher: "",
-                DataPool: "",
-                EndlessGame: ""
+                PackageID: "0x5da4fca2f86ccaf4b3b6a9564c851b89708e82797c982878de74133c14d1305f",
+                UpgradeCap: "0xa47f58cfc344355e06bfa2436177954b5845334bf715550ecc1ed615b4744b98",
+                Publisher: "0xd8e658f23e0657b0c51da0e21c4b67f5133595fae0927665b344d588d5bda79d",
+                DataPool: "0xc9cdae81c480d7bf7215043a1a875f4c51a06f7f8ce0fbd687e4780b3396bde3",
+                EndlessGame: "0xfac108a3a4f559feb02da45cf080f6a6fc4d70d54a3c23cbb2966535e207ca58"
             }
         }
     }
