@@ -8,8 +8,9 @@ import {ChangeEvent, useState} from "react";
 import {useBetterSignAndExecuteTransaction} from "@/hooks";
 import {createPlaceNFTTx} from "@/libs/contracts";
 import {createPurchaseTx} from "@/libs/contracts/trade/createPurchaseTx";
+import {getFFDNFTID, placeFFDPropsTx, purchaseFFDPropsTx} from "@/libs/contracts/ffd";
 
-export default function InputPrice({nftID, marketPrice, marketSteps}: {nftID: string, marketPrice: string, marketSteps: string}) {
+export default function InputPrice({nftID, marketPrice, marketSteps, marketQuality}: {nftID: string, marketPrice: string, marketSteps: string, marketQuality: string}) {
     const dispatch = useDispatch<AppDispatch>();
     const [price, setPrice] = useState<string>("");
     const changeInputPrice = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,39 +37,87 @@ export default function InputPrice({nftID, marketPrice, marketSteps}: {nftID: st
         tx: createPurchaseTx,
         waitForTx: true
     });
+    const {handleSignAndExecuteTransaction: placeFFDProps} = useBetterSignAndExecuteTransaction({
+        tx: placeFFDPropsTx,
+        waitForTx: true
+    });
+    const {handleSignAndExecuteTransaction: purchaseFFDProps} = useBetterSignAndExecuteTransaction({
+        tx: purchaseFFDPropsTx,
+        waitForTx: true
+    });
     const handleClickConfirm = async () => {
-        if (price) {
-            await place({
-                nftID,
-                price: Number(price)
-            }).beforeExecute(() => {
-                dispatch(setShowWaiting(true));
-            }).onError(err => {
-                console.error(err);
-                dispatch(setShowWaiting(false));
-            }).onSuccess(async () => {
-                await dispatch(refreshAccount(account));
-                dispatch(setShowWaiting(false));
-                dispatch(setSellingCard(""));
-                dispatch(setMarketCardPrice(""));
-            }).onExecute();
-        } else if (marketPrice) {
-            await purchase({
-                sender: account,
-                id: nftID,
-                price: Number(marketPrice),
-                ownedNFTID: ownedGameInfo?.objectID
-            }).beforeExecute(() => {
-                dispatch(setShowWaiting(true));
-            }).onError(err => {
-                console.error(err);
-                dispatch(setShowWaiting(false));
-            }).onSuccess(async () => {
-                await dispatch(refreshAccount(account));
-                dispatch(setShowWaiting(false));
-                dispatch(setSellingCard(""));
-                dispatch(setMarketCardPrice(""));
-            }).onExecute();
+        if (!account)
+            return;
+        if (marketSteps) {
+            if (price) {
+                await place({
+                    nftID,
+                    price: Number(price)
+                }).beforeExecute(() => {
+                    dispatch(setShowWaiting(true));
+                }).onError(err => {
+                    console.error(err);
+                    dispatch(setShowWaiting(false));
+                }).onSuccess(async () => {
+                    await dispatch(refreshAccount(account));
+                    dispatch(setShowWaiting(false));
+                    dispatch(setSellingCard(""));
+                    dispatch(setMarketCardPrice(""));
+                }).onExecute();
+            } else if (marketPrice) {
+                await purchase({
+                    sender: account,
+                    id: nftID,
+                    price: Number(marketPrice),
+                    ownedNFTID: ownedGameInfo?.objectID
+                }).beforeExecute(() => {
+                    dispatch(setShowWaiting(true));
+                }).onError(err => {
+                    console.error(err);
+                    dispatch(setShowWaiting(false));
+                }).onSuccess(async () => {
+                    await dispatch(refreshAccount(account));
+                    dispatch(setShowWaiting(false));
+                    dispatch(setSellingCard(""));
+                    dispatch(setMarketCardPrice(""));
+                }).onExecute();
+            }
+        } else {
+            const nft = await getFFDNFTID(account, null);
+            if (price) {
+                await placeFFDProps({
+                    nft,
+                    propsId: nftID,
+                    price: Number(price)
+                }).beforeExecute(() => {
+                    dispatch(setShowWaiting(true));
+                }).onError(err => {
+                    console.error(err);
+                    dispatch(setShowWaiting(false));
+                }).onSuccess(async () => {
+                    await dispatch(refreshAccount(account));
+                    dispatch(setShowWaiting(false));
+                    dispatch(setSellingCard(""));
+                    dispatch(setMarketCardPrice(""));
+                }).onExecute();
+            } else if (marketPrice) {
+                await purchaseFFDProps({
+                    sender: account,
+                    nft,
+                    propsId: nftID,
+                    price: Number(marketPrice)
+                }).beforeExecute(() => {
+                    dispatch(setShowWaiting(true));
+                }).onError(err => {
+                    console.error(err);
+                    dispatch(setShowWaiting(false));
+                }).onSuccess(async () => {
+                    await dispatch(refreshAccount(account));
+                    dispatch(setShowWaiting(false));
+                    dispatch(setSellingCard(""));
+                    dispatch(setMarketCardPrice(""));
+                }).onExecute();
+            }
         }
     }
 
@@ -80,7 +129,7 @@ export default function InputPrice({nftID, marketPrice, marketSteps}: {nftID: st
                     <Delete className="self-start cursor-pointer text-[#35a1f7] hover:text-[#196ae3] m-1" onClick={() => dispatch(setSellingCard(""))}/>
                     <div className="flex-1 flex flex-col gap-4 items-start">
                         <span className="self-center text-4xl mt-5 mb-5 text-[#041f4b]">{marketPrice ? "Buy" : "Sell"}</span>
-                        <span className="text-[#041f4b]">{`Steps: ${marketSteps}`}</span>
+                        <span className="text-[#041f4b]">{marketSteps ? `Steps: ${marketSteps}` : `Quality: ${marketQuality}`}</span>
                         <div className="flex gap-2 items-center">
                             <span className="text-[#041f4b]">Price: </span>
                             {
@@ -92,7 +141,7 @@ export default function InputPrice({nftID, marketPrice, marketSteps}: {nftID: st
                         <span className="text-[#041f4b]">{`ObjectID: ${nftID.slice(0, 6)}...${nftID.slice(-4)}`}</span>
                     </div>
                     <div className={"w-1/2 h-8 rounded-full border-2 border-[#0a0e0f] bg-[#86C7FB] mb-20 text-center leading-7 text-[#0a0e0f] " + (price || marketPrice ? "hover:bg-[#9AD1FB] cursor-pointer" : "opacity-60")}
-                         onClick={price || marketPrice ? handleClickConfirm : () => {}}>{price ? "Confirm" : "Please Enter Price"}</div>
+                         onClick={price || marketPrice ? handleClickConfirm : () => {}}>{price || marketPrice ? "Confirm" : "Please Enter Price"}</div>
                 </div>
             </div>
         </div>

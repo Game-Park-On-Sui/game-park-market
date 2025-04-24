@@ -27,7 +27,7 @@ type ListingType = {
     }
 }
 
-async function getParentID(GPCapID: string) {
+export async function getParentID(GPCapID: string) {
     const data = await suiClient.getObject({
         id: GPCapID,
         options: {
@@ -37,7 +37,7 @@ async function getParentID(GPCapID: string) {
     return (data.data?.content as unknown as GPCapType).fields.kiosk.fields.id.id;
 }
 
-async function getGameInfo(id: string, cursor: string | null | undefined): Promise<DynamicFieldInfo[]> {
+export async function getGameInfo(id: string, cursor: string | null | undefined): Promise<DynamicFieldInfo[]> {
     const data = await suiClient.getDynamicFields({
         parentId: id,
         cursor
@@ -50,7 +50,7 @@ async function getGameInfo(id: string, cursor: string | null | undefined): Promi
     return dynamicFields;
 }
 
-async function getListing(id: string): Promise<[string, string]> {
+export async function getListing(id: string): Promise<[string, string]> {
     const data = await suiClient.getObject({
         id: id,
         options: {

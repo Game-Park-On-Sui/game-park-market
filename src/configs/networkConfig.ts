@@ -30,6 +30,13 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
                 Publisher: "",
                 DataPool: "",
                 EndlessGame: ""
+            },
+            FFD: {
+                PackageID: "",
+                UpgradeCap: "",
+                Publisher: "",
+                PropsList: "",
+                Data: ""
             }
         }
     },
@@ -45,7 +52,7 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
                 UserTable: "0x9424be761fd89f5d2c6615536f1747f45ac6c3ad60e7f90f2f92744ad5d6752f"
             },
             Kiosk: {
-                PackageID: "0xd9a97f29d1c673e5d6a26404bd318974ad8cbfa34abab51ffe2b97324d85c95a",
+                PackageID: "0x2ca93b0217a841bb8306678122bfcefd295f57b68a5c09a2e2f969236ee1eece",
                 UpgradeCap: "0x2c0adaa61f5795a8738af77abeaf2043f1829cea209399ed4b5841241b25ed14",
                 Publisher: "0xe9b3dd5236a706dde56c68ac476d862d4ff4e5c3558ea04f6668b06f1f3e86f6",
                 GameParkKioskCap: "0x42e45cc00451a346cbd76eb6c6ce0bf37cf028b5deb3744ead7ceaa5a610350f"
@@ -56,6 +63,13 @@ const {networkConfig, useNetworkVariable, useNetworkVariables} = createNetworkCo
                 Publisher: "0xd8e658f23e0657b0c51da0e21c4b67f5133595fae0927665b344d588d5bda79d",
                 DataPool: "0xc9cdae81c480d7bf7215043a1a875f4c51a06f7f8ce0fbd687e4780b3396bde3",
                 EndlessGame: "0xfac108a3a4f559feb02da45cf080f6a6fc4d70d54a3c23cbb2966535e207ca58"
+            },
+            FFD: {
+                PackageID: "0x0e5a6f507dcd5fb27b8b61a36d5feb29cea3502b80f85e29012ce243c0acdc2a",
+                UpgradeCap: "0xa24da467f5965b8833fc6f94170440c93e0c65553dbe292f738fd80430b58b72",
+                Publisher: "0x9b695c08eae3d81fd8bea703ca5759b0cf94685528b81da4417461ac01d75b7d",
+                PropsList: "0xd7477c0049a4dbb62f39d24abc0343a5d05e78303c280ea570ed57ac8ed9ff87",
+                Data: "0x54865c472270a82b1a6da071a8a6058e744d6a83aa1c08a1a0f4b0fceecf28ce"
             }
         }
     }

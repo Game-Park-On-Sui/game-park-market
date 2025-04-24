@@ -88,3 +88,25 @@ public fun purchase<T: key + store>(cap: &mut GameParkKioskCap, id: ID, mut gp: 
     // take item
     transfer::public_transfer(cap.kiosk.take<T>(&cap.kioskOwnerCap, id), ctx.sender());
 }
+
+public fun purchase_to_use<T: key + store>(cap: &mut GameParkKioskCap, id: ID, mut gp: Coin<GP>, treasury: &mut GPTreasuryCap, pool: &mut Pool, ctx: &mut TxContext): T {
+    // remove dynamic field
+    let Listing {
+        price,
+        receipt
+    } = dynamic_field::remove<ID, Listing>(cap.kiosk.uid_mut(), id);
+
+    // consume fee
+    assert!(price == gp.value(), E_Not_Enough_GP);
+    let consume_amount = u64::max(gp.value() / 100, 1);
+    treasury.consume(pool, gp.split(consume_amount, ctx));
+    // transfer gp to seller
+    if (gp.value() == 0) {
+        gp.destroy_zero();
+    } else {
+        transfer::public_transfer(gp, receipt);
+    };
+
+    // take item and return it
+    cap.kiosk.take<T>(&cap.kioskOwnerCap, id)
+}

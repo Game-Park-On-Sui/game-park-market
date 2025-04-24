@@ -10,6 +10,7 @@ export default function Home() {
     const sellingCard = useAppSelector(state => state.pageInfo.sellingCard);
     const marketCardSteps = useAppSelector(state => state.pageInfo.marketCardSteps);
     const marketCardPrice = useAppSelector(state => state.pageInfo.marketCardPrice);
+    const marketCardQuality = useAppSelector(state => state.pageInfo.marketCardQuality);
 
     return (
         <>
@@ -22,7 +23,7 @@ export default function Home() {
                         <Trade/>
                 }
             </div>
-            {sellingCard && <InputPrice nftID={sellingCard} marketPrice={marketCardPrice} marketSteps={marketCardSteps} />}
+            {sellingCard && <InputPrice nftID={sellingCard} marketPrice={marketCardPrice} marketSteps={marketCardSteps} marketQuality={marketCardQuality} />}
             {showWaiting && <Waiting />}
         </>
     );

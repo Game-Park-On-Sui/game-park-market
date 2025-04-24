@@ -1,11 +1,12 @@
 'use client'
 
 import {useEffect, useState} from "react";
-import {JumpingCard} from "@/components/trade/cards";
+import {FFDCard, JumpingCard} from "@/components/trade/cards";
 import {useAppSelector} from "@/store";
 import {GameInfoType} from "@/libs/contracts";
+import {PropsType} from "@/store/modules/pageInfo";
 
-const TabTile = ["Jumping", "Soon..."];
+const TabTile = ["Jumping", "FFDove"];
 const TradeType = ["Buy", "Sell"];
 
 export default function Trade() {
@@ -14,15 +15,22 @@ export default function Trade() {
     const [array, setArray] = useState<GameInfoType[]>([]);
     const sellingJumpingGame = useAppSelector(state => state.pageInfo.gameInfo);
     const marketJumpingGames = useAppSelector(state => state.pageInfo.marketGameInfos);
+    const [ffdArray, setFFDArray] = useState<PropsType[]>([]);
+    const ffdOwnedProps = useAppSelector(state => state.pageInfo.ffdOwnedProps);
+    const marketFFDProps = useAppSelector(state => state.pageInfo.marketFFDProps);
     useEffect(() => {
         if (tab === 0 && tradeType === 1 && sellingJumpingGame) {
             setArray([sellingJumpingGame]);
         } else if (tab === 0 && tradeType === 0 && marketJumpingGames) {
             setArray(marketJumpingGames);
+        } else if (tab === 1 && tradeType === 1 && ffdOwnedProps) {
+            setFFDArray(ffdOwnedProps);
+        } else if (tab === 1 && tradeType === 0 && ffdOwnedProps) {
+            setFFDArray(marketFFDProps);
         } else {
             setArray([]);
         }
-    }, [tab, tradeType, sellingJumpingGame, marketJumpingGames]);
+    }, [tab, tradeType, sellingJumpingGame, marketJumpingGames, ffdOwnedProps, marketFFDProps]);
 
     return (
         <div className="h-[80vh] w-screen">
@@ -58,12 +66,18 @@ export default function Trade() {
                     </div>
                     <div className="w-full h-full flex gap-4 flex-wrap content-start overflow-auto">
                         {
+                            tab === 0 &&
                             array.map((info, idx) => {
                                 return (
                                     <div key={idx}>
-                                        {
-                                            tab === 0 && <JumpingCard info={info} />
-                                        }
+                                        <JumpingCard info={info} />
+                                    </div>
+                                );
+                            }) ||
+                            ffdArray.map((info, idx) => {
+                                return (
+                                    <div key={idx}>
+                                        <FFDCard info={info} />
                                     </div>
                                 );
                             })

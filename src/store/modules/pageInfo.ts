@@ -3,6 +3,7 @@
 import {createSlice, ThunkDispatch, UnknownAction} from "@reduxjs/toolkit";
 import {Dispatch} from "react";
 import {GameInfoType, getBalance, getGameInfo, getInfo, getJumpingNFTInMarket} from "@/libs/contracts";
+import {getFFDOwnedProps, getMarketFFDProps} from "@/libs/contracts/ffd";
 
 export type SwapTokenType = {
     name: string,
@@ -13,6 +14,29 @@ export type SwapTokenType = {
 export type LinkedUserInfo = {
     name: string,
     isLinked: boolean
+}
+
+export type PropsType = {
+    fields: {
+        id: {
+            id: string
+        },
+        props_type: string,
+        quality: string,
+        image_url: string,
+        effects: {
+            fields: {
+                contents: {
+                    fields: {
+                        key: string,
+                        value: string
+                    }
+                }[]
+            }
+        },
+        price?: string,
+        owner?: string
+    }
 }
 
 export type initialStateType = {
@@ -26,6 +50,9 @@ export type initialStateType = {
     marketGameInfos: GameInfoType[] | null | undefined,
     marketCardPrice: string,
     marketCardSteps: string,
+    ffdOwnedProps: PropsType[],
+    marketCardQuality: string,
+    marketFFDProps: PropsType[]
 }
 
 const initialState: initialStateType = {
@@ -53,6 +80,9 @@ const initialState: initialStateType = {
     marketGameInfos: null,
     marketCardPrice: "",
     marketCardSteps: "0",
+    ffdOwnedProps: [],
+    marketCardQuality: "epic",
+    marketFFDProps: []
 }
 
 const pageInfoStore = createSlice({
@@ -90,6 +120,15 @@ const pageInfoStore = createSlice({
         },
         setMarketCardSteps(state, action: { payload: string }) {
             state.marketCardSteps = action.payload;
+        },
+        setFFDOwnedProps(state, action: { payload: PropsType[] }) {
+            state.ffdOwnedProps = action.payload;
+        },
+        setMarketCardQuality(state, action: { payload: string }) {
+            state.marketCardQuality = action.payload;
+        },
+        setMarketFFDProps(state, action: { payload: PropsType[] }) {
+            state.marketFFDProps = action.payload;
         }
     }
 });
@@ -105,6 +144,9 @@ const {
     setMarketGameInfos,
     setMarketCardPrice,
     setMarketCardSteps,
+    setFFDOwnedProps,
+    setMarketCardQuality,
+    setMarketFFDProps
 } = pageInfoStore.actions;
 
 const refreshAccount = (account: string) => {
@@ -117,12 +159,16 @@ const refreshAccount = (account: string) => {
             dispatch(setLinkedUserInfo(""));
             dispatch(setGameInfo(null));
             dispatch(setMarketGameInfos(await getJumpingNFTInMarket()));
+            dispatch(setFFDOwnedProps([]));
+            dispatch(setMarketFFDProps([]));
             return;
         }
         dispatch(setSwapTokenInfo(await getBalance(account)));
         dispatch(setLinkedUserInfo(await getInfo(account)));
         dispatch(setGameInfo(await getGameInfo(account)));
         dispatch(setMarketGameInfos(await getJumpingNFTInMarket()));
+        dispatch(setFFDOwnedProps(await getFFDOwnedProps(account)));
+        dispatch(setMarketFFDProps(await getMarketFFDProps()));
     }
 }
 
@@ -133,6 +179,7 @@ export {
     setSellingCard,
     setMarketCardPrice,
     setMarketCardSteps,
+    setMarketCardQuality
 };
 export {refreshAccount};
 export default pageInfoStore.reducer;
