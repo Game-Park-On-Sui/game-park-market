@@ -1,6 +1,6 @@
 'use client'
 
-import {Swap, Trade, Waiting} from "@/components";
+import {Game, Swap, Trade, Waiting} from "@/components";
 import {useAppSelector} from "@/store";
 import {InputPrice} from "@/components/trade/cards";
 
@@ -20,11 +20,17 @@ export default function Home() {
                         ?
                         <Swap/>
                         :
-                        <Trade/>
+                        (
+                            tab === 1
+                                ?
+                                <Trade/>
+                                :
+                                <Game/>
+                        )
                 }
             </div>
-            {sellingCard && <InputPrice nftID={sellingCard} marketPrice={marketCardPrice} marketSteps={marketCardSteps} marketQuality={marketCardQuality} />}
-            {showWaiting && <Waiting />}
+            {sellingCard && <InputPrice nftID={sellingCard} marketPrice={marketCardPrice} marketSteps={marketCardSteps} marketQuality={marketCardQuality}/>}
+            {showWaiting && <Waiting/>}
         </>
     );
 }

@@ -39,6 +39,11 @@ export default function Navigation() {
                             onClick={() => dispatch(setTab(1))}>
                             Trade
                         </div>
+                        <div
+                            className={"cursor-pointer hover:text-white h-16 leading-[4rem] transition-all " + (tab !== 2 ? "" : "px-4 text-white bg-[#080808]")}
+                            onClick={() => dispatch(setTab(2))}>
+                            Game
+                        </div>
                     </div>
                     <div className="flex gap-10 items-center">
                         <div className="relative group">
