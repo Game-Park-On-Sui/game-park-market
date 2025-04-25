@@ -16,6 +16,13 @@ export default function FFDCard({info}: {info: PropsType}) {
         dispatch(setMarketCardQuality(info.fields.quality));
         dispatch(setMarketCardPrice(info.fields.price));
     }
+    const getShowKey = (key: string) => {
+        if (key === "criticalHitRate")
+            return "criticalRate";
+        if (key === "criticalDamage")
+            return "criticalDmg";
+        return key;
+    }
     const getRealValue = (type: string, value: number) => {
         value -= 1000;
         if (type === "blood")
@@ -38,7 +45,7 @@ export default function FFDCard({info}: {info: PropsType}) {
                     className="absolute flex flex-col items-start -bottom-32 left-0 w-full pl-1 text-[#afb3b5] group-hover:bottom-2 transition-all duration-750 text-lg">
                     {
                         info.fields.effects.fields.contents.map((content, index) =>
-                            <span key={index}>{`${content.fields.key}: ${getRealValue(info.fields.props_type, Number(content.fields.value))}`}</span>)
+                            <span key={index}>{`${getShowKey(content.fields.key)}: ${getRealValue(info.fields.props_type, Number(content.fields.value))}`}</span>)
                     }
                 </div>
             </div>
